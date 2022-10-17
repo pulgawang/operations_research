@@ -37,6 +37,6 @@ def main(optim_name):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--optim", required=True, choices=["sgd", "adam", "nadam"])
+    parser.add_argument("--optim", required=True, choices=["sgd", "adam", "nadam", "sgd_torch", "adam_torch", "nadam_torch"])
     args = parser.parse_args()
     main(args.optim)

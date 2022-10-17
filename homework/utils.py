@@ -14,6 +14,8 @@ from torch import nn
 from torch.utils import data
 from torchvision import transforms
 
+import optim
+
 
 def try_gpu(i=0):
     """Return gpu(i) if exists, otherwise return cpu().
@@ -77,12 +79,18 @@ def get_cross_entropy_loss():
 
 
 def get_optim_func(name="sgd"):
-    if "sgd" == name:
+    if "sgd_torch" == name:
         return torch.optim.SGD
-    elif "adam" == name:
+    elif "adam_torch" == name:
         return torch.optim.Adam
-    elif "nadam" == name:
+    elif "nadam_torch" == name:
         return torch.optim.NAdam
+    elif "sgd" == name:
+        return optim.SGD
+    elif "adam" == name:
+        return optim.Adam
+    elif "nadam" == name:
+        return optim.NAdam
     else:
         raise ValueError(f"Unsupported GD: {name}")
 
@@ -128,8 +136,7 @@ def train_epoch(net, train_iter, loss, updater, device):
             l.mean().backward()
             updater.step()
         else:
-            l.sum().backward()
-            updater(X.shape[0])
+            raise ValueError("Invalid updater")
         correct_count += accuracy(y_hat, y)
         total_count += y.numel()
         total_loss += l.sum()
