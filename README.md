@@ -25,7 +25,7 @@
 ```shell
 $ cd operations_research
 $ pip install -r requirements.txt
-$ python homework/main.py --optim SGD
+$ python homework/main.py --optim sgd
 ```
 
 ## 2. 实验过程
