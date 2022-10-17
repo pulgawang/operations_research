@@ -118,6 +118,7 @@ def train_epoch(net, train_iter, loss, updater, device):
         net.train()
     correct_count = 0.
     total_count = 0.
+    total_loss = 0.
     for X, y in train_iter:
         X, y = X.to(device), y.to(device)
         y_hat = net(X)
@@ -131,7 +132,8 @@ def train_epoch(net, train_iter, loss, updater, device):
             updater(X.shape[0])
         correct_count += accuracy(y_hat, y)
         total_count += y.numel()
-    return l.mean(), correct_count / total_count
+        total_loss += l.sum()
+    return total_loss / total_count, correct_count / total_count
 
 
 def train(net, train_iter, test_iter, loss, num_epochs, updater, device, filename=None):
