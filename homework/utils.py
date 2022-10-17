@@ -154,7 +154,7 @@ def train(net, train_iter, test_iter, loss, num_epochs, updater, device, filenam
         results.append([
             epoch, train_loss, train_acc, test_acc, t2
         ])
-        print(f"epoch: {epoch}, train loss: {train_loss:.3f}, train acc: {train_acc:.3f}, test acc: {test_acc:.3f}, escape time: {t2:.1f}s")
+        print(f"epoch: {epoch}, train loss: {train_loss:.5f}, train acc: {train_acc:.3f}, test acc: {test_acc:.3f}, escape time: {t2:.1f}s")
     if filename:
         with open(filename, 'w') as f:
             write = csv.writer(f)
