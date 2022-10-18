@@ -1,0 +1,21 @@
+epoch,train loss,train acc,test acc,escape time
+0,"tensor(0.0161, device='cuda:0', grad_fn=<DivBackward0>)",0.2512,0.534,79.13957405090332
+1,"tensor(0.0074, device='cuda:0', grad_fn=<DivBackward0>)",0.6369166666666667,0.7171,81.21967768669128
+2,"tensor(0.0057, device='cuda:0', grad_fn=<DivBackward0>)",0.7280166666666666,0.7623,78.73664689064026
+3,"tensor(0.0049, device='cuda:0', grad_fn=<DivBackward0>)",0.7664166666666666,0.7794,81.0809257030487
+4,"tensor(0.0044, device='cuda:0', grad_fn=<DivBackward0>)",0.7892166666666667,0.8077,80.94928574562073
+5,"tensor(0.0040, device='cuda:0', grad_fn=<DivBackward0>)",0.8063333333333333,0.822,85.10457611083984
+6,"tensor(0.0038, device='cuda:0', grad_fn=<DivBackward0>)",0.8214,0.8221,78.99074053764343
+7,"tensor(0.0035, device='cuda:0', grad_fn=<DivBackward0>)",0.8327166666666667,0.843,79.49105668067932
+8,"tensor(0.0034, device='cuda:0', grad_fn=<DivBackward0>)",0.8409166666666666,0.8487,79.28257203102112
+9,"tensor(0.0032, device='cuda:0', grad_fn=<DivBackward0>)",0.84795,0.8489,82.00524997711182
+10,"tensor(0.0031, device='cuda:0', grad_fn=<DivBackward0>)",0.8569666666666667,0.8629,81.18645524978638
+11,"tensor(0.0030, device='cuda:0', grad_fn=<DivBackward0>)",0.86135,0.8654,78.27392029762268
+12,"tensor(0.0029, device='cuda:0', grad_fn=<DivBackward0>)",0.8659,0.8678,81.0205135345459
+13,"tensor(0.0028, device='cuda:0', grad_fn=<DivBackward0>)",0.8708833333333333,0.8737,84.00149941444397
+14,"tensor(0.0027, device='cuda:0', grad_fn=<DivBackward0>)",0.87375,0.8713,80.32094597816467
+15,"tensor(0.0026, device='cuda:0', grad_fn=<DivBackward0>)",0.8763,0.8748,79.53187251091003
+16,"tensor(0.0026, device='cuda:0', grad_fn=<DivBackward0>)",0.8797,0.8799,79.52579593658447
+17,"tensor(0.0025, device='cuda:0', grad_fn=<DivBackward0>)",0.88165,0.8815,79.75216746330261
+18,"tensor(0.0024, device='cuda:0', grad_fn=<DivBackward0>)",0.8862666666666666,0.8824,78.93322086334229
+19,"tensor(0.0024, device='cuda:0', grad_fn=<DivBackward0>)",0.8873333333333333,0.8845,80.8423399925232
