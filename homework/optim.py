@@ -87,7 +87,7 @@ class Adam(Optimizer):
 
             for i, param in enumerate(params):
 
-                grad = -grads[i]
+                grad = grads[i]
                 exp_avg = exp_avgs[i]
                 exp_avg_sq = exp_avg_sqs[i]
                 step_t = state_steps[i]
