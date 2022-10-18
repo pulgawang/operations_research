@@ -110,22 +110,15 @@ class Adam(Optimizer):
 
                 param.addcdiv_(exp_avg, denom, value=-step_size)
 
-class NAdam(Optimizer):
-    pass
-
 
 def get_optim_func(name="sgd"):
     if "sgd_torch" == name:
         return torch.optim.SGD
     elif "adam_torch" == name:
         return torch.optim.Adam
-    elif "nadam_torch" == name:
-        return torch.optim.NAdam
     elif "sgd" == name:
         return SGD
     elif "adam" == name:
         return Adam
-    elif "nadam" == name:
-        return NAdam
     else:
         raise ValueError(f"Unsupported GD: {name}")

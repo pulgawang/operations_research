@@ -30,11 +30,11 @@ def main(optim_name):
     num_epochs = 20
     optimizer = get_optim_func(name=optim_name)(net.parameters(), lr=lr)
     loss = get_cross_entropy_loss()
-    train(net, train_iter, test_iter, loss, num_epochs, optimizer, try_gpu())
+    train(net, train_iter, test_iter, loss, num_epochs, optimizer, try_gpu(), filename=f"{optim_name}.csv")
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--optim", required=True, choices=["sgd", "adam", "nadam", "sgd_torch", "adam_torch", "nadam_torch"])
+    parser.add_argument("--optim", required=True, choices=["sgd", "adam", "sgd_torch", "adam_torch"])
     args = parser.parse_args()
     main(args.optim)
