@@ -7,7 +7,7 @@
 """
 from argparse import ArgumentParser
 
-from homework.optim import get_optim_func
+from optim import get_optim_func
 from utils import (
     load_data_fashion_mnist,
     get_alexnet,
