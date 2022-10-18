@@ -4,7 +4,9 @@
 
 ## 1. 问题描述
 
-分别实现SGD和Adam，并使用AlexNet在Fashion Minist分类问题上进行测试，考察不同的优化算法在非凸优化问题上的loss下降情况。
+Adam是一种自适应学习率的优化方法。
+
+本实验分别实现SGD和Adam，并使用AlexNet在Fashion Minist分类问题上进行测试，考察不同的优化算法在非凸优化问题上的loss下降情况。
 
 ### 1.1. 实验环境
  
@@ -40,3 +42,15 @@ for i, param in enumerate(params):
 
 
 ## 3. 实验结果
+
+### SGD
+```text
+
+```
+
+### Adam
+```text
+
+```
+
+### 对比

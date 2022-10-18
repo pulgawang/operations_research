@@ -48,7 +48,7 @@ def load_data_fashion_mnist(batch_size, resize=None):
 def init_weight(m):
     """初始化参数"""
     if type(m) == nn.Linear or type(m) == nn.Conv2d:
-        nn.init.xavier_uniform_(m.weight)
+        nn.init.ones_(m.weight)  # .xavier_uniform_(m.weight)
 
 
 def get_alexnet():
