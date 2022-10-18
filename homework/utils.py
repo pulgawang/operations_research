@@ -140,7 +140,7 @@ def train(net, train_iter, test_iter, loss, num_epochs, updater, device, filenam
         train_loss, train_acc = train_epoch(net, train_iter, loss, updater, device)
         test_acc = caculate_accuracy_gpu(net, test_iter)
         t2 = time.time() - t1
-        results.append([epoch, train_loss, train_acc, test_acc, t2])
+        results.append([epoch, float(train_loss), train_acc, test_acc, t2])
         print(
             f"epoch: {epoch}, train loss: {train_loss:.5f}, train acc: {train_acc:.3f}, test acc: {test_acc:.3f}, escape time: {t2:.1f}s"
         )
