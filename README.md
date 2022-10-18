@@ -103,6 +103,6 @@ epoch: 19, train loss: 0.00310, train acc: 0.851, test acc: 0.856, escape time: 
  - SGD方法传统下降缓慢，但是在相同的迭代次数内能够达到更优的效果
  - Adam优点为下降速度更快，但是由于学习率的调整，后续下降逐渐缓慢，另外，Adam需要调整beta和eps参数，引入了更多参数，影响易用性（即使作者给出了建议参数）
 
-TODO:
+## TODO
  - SGD + Momentum/Nesterov
  - NAdam（Adam + Nesterov）
