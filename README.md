@@ -20,13 +20,14 @@ Adam是一种自适应学习率的优化方法。
    - Kingma, Diederik P., and Jimmy Ba. "Adam: A method for stochastic optimization." arXiv preprint arXiv:1412.6980 (2014).
    - Zhang, Aston, et al. "Dive into deep learning." arXiv preprint arXiv:2106.11342 (2021).
 
-### 1.2. 实验过程
+### 1.2. 代码
 
 ```shell
 $ git clone git@github.com:pulgawang/operations_research.git
 $ cd operations_research
 $ pip install -r requirements.txt
 $ python homework/main.py --optim [sgd,adam]
+$ # lr=0.005
 ```
 
 ## 2. 实验过程
@@ -104,5 +105,6 @@ epoch: 19, train loss: 0.00310, train acc: 0.851, test acc: 0.856, escape time: 
  - Adam优点为下降速度更快，但是由于学习率的调整，后续下降逐渐缓慢，另外，Adam需要调整beta和eps参数，引入了更多参数，影响易用性（即使作者给出了建议参数）
 
 ## TODO
+ - 考虑不同lr下（尤其是较大lr）的结果，分析adam是否更具优势
  - SGD + Momentum/Nesterov
  - NAdam（Adam + Nesterov）
