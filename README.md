@@ -30,7 +30,14 @@ $ python homework/main.py --optim sgd
 
 ## 2. 实验过程
 ### 2.1. SGD实现
-
+```python
+# 更新参数，减去lr*梯度
+# d_p_list为params的梯度，lr为learning_rate
+for i, param in enumerate(params):
+    d_p = d_p_list[i]
+    alpha = -lr
+    param.add_(d_p, alpha=alpha)
+```
 ### 2.2. Adam实现
 
 ### 2.3. NAdam实现

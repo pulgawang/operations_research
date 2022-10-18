@@ -7,10 +7,10 @@
 """
 from argparse import ArgumentParser
 
+from homework.optim import get_optim_func
 from utils import (
     load_data_fashion_mnist,
     get_alexnet,
-    get_optim_func,
     get_cross_entropy_loss,
     try_gpu,
     train,
@@ -21,8 +21,6 @@ def main(optim_name):
     # 设定batch_size，读取数据
     batch_size = 128
     train_iter, test_iter = load_data_fashion_mnist(batch_size=batch_size, resize=224)
-    train_iter.__setattr__("num_workers", 0)
-    test_iter.__setattr__("num_workers", 0)
 
     # 获取模型，并且初始化
     net = get_alexnet()

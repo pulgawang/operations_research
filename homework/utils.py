@@ -14,16 +14,14 @@ from torch import nn
 from torch.utils import data
 from torchvision import transforms
 
-import optim
-
 
 def try_gpu(i=0):
     """Return gpu(i) if exists, otherwise return cpu().
 
     Defined in :numref:`sec_use_gpu`"""
     if torch.cuda.device_count() >= i + 1:
-        return torch.device(f'cuda:{i}')
-    return torch.device('cpu')
+        return torch.device(f"cuda:{i}")
+    return torch.device("cpu")
 
 
 def load_data_fashion_mnist(batch_size, resize=None):
@@ -40,10 +38,11 @@ def load_data_fashion_mnist(batch_size, resize=None):
     mnist_test = torchvision.datasets.FashionMNIST(
         root="data", train=False, transform=trans, download=True
     )
-    return (
-        data.DataLoader(mnist_train, batch_size, shuffle=True, num_workers=4),
-        data.DataLoader(mnist_test, batch_size, shuffle=False, num_workers=4),
-    )
+    train_iter = data.DataLoader(mnist_train, batch_size, shuffle=True, num_workers=4)
+    train_iter.__setattr__("num_workers", 0)
+    test_iter = data.DataLoader(mnist_test, batch_size, shuffle=False, num_workers=4)
+    test_iter.__setattr__("num_workers", 0)
+    return train_iter, test_iter
 
 
 def init_weight(m):
@@ -55,20 +54,27 @@ def init_weight(m):
 def get_alexnet():
     """AlexNet"""
     net = nn.Sequential(
-        nn.Conv2d(1, 96, kernel_size=11, stride=4, padding=1), nn.ReLU(),
+        nn.Conv2d(1, 96, kernel_size=11, stride=4, padding=1),
+        nn.ReLU(),
         nn.MaxPool2d(kernel_size=3, stride=2),
-        nn.Conv2d(96, 256, kernel_size=5, padding=2), nn.ReLU(),
+        nn.Conv2d(96, 256, kernel_size=5, padding=2),
+        nn.ReLU(),
         nn.MaxPool2d(kernel_size=3, stride=2),
-        nn.Conv2d(256, 384, kernel_size=3, padding=1), nn.ReLU(),
-        nn.Conv2d(384, 384, kernel_size=3, padding=1), nn.ReLU(),
-        nn.Conv2d(384, 256, kernel_size=3, padding=1), nn.ReLU(),
+        nn.Conv2d(256, 384, kernel_size=3, padding=1),
+        nn.ReLU(),
+        nn.Conv2d(384, 384, kernel_size=3, padding=1),
+        nn.ReLU(),
+        nn.Conv2d(384, 256, kernel_size=3, padding=1),
+        nn.ReLU(),
         nn.MaxPool2d(kernel_size=3, stride=2),
         nn.Flatten(),
-        nn.LazyLinear(out_features=4096), nn.ReLU(), # nn.Linear(256 * 5 * 5, 4096)
+        nn.LazyLinear(out_features=4096),
+        nn.ReLU(),  # nn.Linear(256 * 5 * 5, 4096)
         nn.Dropout(p=0.5),
-        nn.Linear(4096, 4096), nn.ReLU(),
+        nn.Linear(4096, 4096),
+        nn.ReLU(),
         nn.Dropout(p=0.5),
-        nn.Linear(4096, 10)
+        nn.Linear(4096, 10),
     )
     net.apply(init_weight)
     return net
@@ -76,23 +82,6 @@ def get_alexnet():
 
 def get_cross_entropy_loss():
     return nn.CrossEntropyLoss()
-
-
-def get_optim_func(name="sgd"):
-    if "sgd_torch" == name:
-        return torch.optim.SGD
-    elif "adam_torch" == name:
-        return torch.optim.Adam
-    elif "nadam_torch" == name:
-        return torch.optim.NAdam
-    elif "sgd" == name:
-        return optim.SGD
-    elif "adam" == name:
-        return optim.Adam
-    elif "nadam" == name:
-        return optim.NAdam
-    else:
-        raise ValueError(f"Unsupported GD: {name}")
 
 
 def accuracy(y_hat, y):
@@ -107,8 +96,8 @@ def caculate_accuracy_gpu(net, data_iter, device=None):
         net.eval()
         if not device:
             device = next(iter(net.parameters())).device
-    correct_count = 0.
-    total_count = 0.
+    correct_count = 0.0
+    total_count = 0.0
     with torch.no_grad():
         for X, y in data_iter:
             if isinstance(X, list):
@@ -124,9 +113,9 @@ def caculate_accuracy_gpu(net, data_iter, device=None):
 def train_epoch(net, train_iter, loss, updater, device):
     if isinstance(net, torch.nn.Module):
         net.train()
-    correct_count = 0.
-    total_count = 0.
-    total_loss = 0.
+    correct_count = 0.0
+    total_count = 0.0
+    total_loss = 0.0
     for X, y in train_iter:
         X, y = X.to(device), y.to(device)
         y_hat = net(X)
@@ -150,12 +139,12 @@ def train(net, train_iter, test_iter, loss, num_epochs, updater, device, filenam
         t1 = time.time()
         train_loss, train_acc = train_epoch(net, train_iter, loss, updater, device)
         test_acc = caculate_accuracy_gpu(net, test_iter)
-        t2 = time.time()-t1
-        results.append([
-            epoch, train_loss, train_acc, test_acc, t2
-        ])
-        print(f"epoch: {epoch}, train loss: {train_loss:.5f}, train acc: {train_acc:.3f}, test acc: {test_acc:.3f}, escape time: {t2:.1f}s")
+        t2 = time.time() - t1
+        results.append([epoch, train_loss, train_acc, test_acc, t2])
+        print(
+            f"epoch: {epoch}, train loss: {train_loss:.5f}, train acc: {train_acc:.3f}, test acc: {test_acc:.3f}, escape time: {t2:.1f}s"
+        )
     if filename:
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             write = csv.writer(f)
             write.writerows(results)
