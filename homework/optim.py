@@ -21,18 +21,18 @@ class SGD(Optimizer):
     def step(self, closure=None):
         for group in self.param_groups:
             params = []
-            d_p_list = []
+            grads = []
             lr = group["lr"]
 
             # 计算梯度
             for p in group['params']:
                 if p.grad is not None:
                     params.append(p)
-                    d_p_list.append(p.grad)
+                    grads.append(p.grad)
 
             # 更新参数，减去lr*梯度
             for i, param in enumerate(params):
-                d_p = d_p_list[i]
+                d_p = grads[i]
                 alpha = -lr
                 param.add_(d_p, alpha=alpha)
 
@@ -46,11 +46,11 @@ class Adam(Optimizer):
     @torch.no_grad()
     def step(self, closure=None):
         for group in self.param_groups:
-            params = []
-            grads = []
-            exp_avgs = []
-            exp_avg_sqs = []
-            state_steps = []
+            params = []  # 参数
+            grads = []  # 梯度
+            vs = []  # v: 梯度的指数滑动平均数，梯度一阶矩表示
+            ss = []  # s: 梯度平方的指数滑动平均数，梯度二阶矩表示
+            steps = []
             lr = group["lr"]
             beta1, beta2 = group['betas']
             eps = group["eps"]
@@ -61,43 +61,41 @@ class Adam(Optimizer):
                     grads.append(p.grad)
 
                     state = self.state[p]
-                    # Lazy state initialization
+                    # 初始化
                     if len(state) == 0:
                         state['step'] = torch.tensor(0.)
-                        # Exponential moving average of gradient values
-                        state['exp_avg'] = torch.zeros_like(p)
-                        # Exponential moving average of squared gradient values
-                        state['exp_avg_sq'] = torch.zeros_like(p)
+                        # v初始化:
+                        state['vs'] = torch.zeros_like(p)
+                        # s初始化
+                        state['ss'] = torch.zeros_like(p)
 
-                    exp_avgs.append(state['exp_avg'])
-                    exp_avg_sqs.append(state['exp_avg_sq'])
+                    vs.append(state['vs'])
+                    ss.append(state['ss'])
 
-                    state_steps.append(state['step'])
+                    steps.append(state['step'])
 
             for i, param in enumerate(params):
 
                 grad = grads[i]
-                exp_avg = exp_avgs[i]
-                exp_avg_sq = exp_avg_sqs[i]
-                step_t = state_steps[i]
-                # update step
+                v = vs[i]
+                s = ss[i]
+                step_t = steps[i]
+
                 step_t += 1
-
-                # Decay the first and second moment running average coefficient
-                exp_avg.mul_(beta1).add_(grad, alpha=1 - beta1)
-                exp_avg_sq.mul_(beta2).addcmul_(grad, grad.conj(), value=1 - beta2)
-
                 step = step_t.item()
 
+                # 更新v和s
+                v.mul_(beta1).add_(grad, alpha=1 - beta1)  # v
+                s.mul_(beta2).addcmul_(grad, grad.conj(), value=1 - beta2)  # s
+
+                # 偏差修正，解决初始偏差
                 bias_correction1 = 1 - beta1 ** step
                 bias_correction2 = 1 - beta2 ** step
 
                 step_size = lr / bias_correction1
 
-                bias_correction2_sqrt = math.sqrt(bias_correction2)
-                denom = (exp_avg_sq.sqrt() / bias_correction2_sqrt).add_(eps)
-
-                param.addcdiv_(exp_avg, denom, value=-step_size)
+                # 更新梯度
+                param.addcdiv_(v, (s.sqrt() / math.sqrt(bias_correction2)).add_(eps), value=-step_size)
 
 
 def get_optim_func(name="sgd"):

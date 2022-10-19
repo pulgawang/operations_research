@@ -34,15 +34,34 @@ $ # lr=0.005
 ### 2.1. SGD实现
 ```python
 # 更新参数，减去lr*梯度
-# d_p_list为params的梯度，lr为learning_rate
+# grads为params的梯度
+# lr为learning_rate
 for i, param in enumerate(params):
-    d_p = d_p_list[i]
+    d_p = grads[i]
     alpha = -lr
     param.add_(d_p, alpha=alpha)
 ```
 ### 2.2. Adam实现
 ```python
-
+# Adam过程和详细变量说明见https://zh-v2.d2l.ai/chapter_optimization/adam.html#id4
+# grad为param的梯度
+# lr为learning_rate
+# v为梯度的一阶矩估计
+# s为梯度的二阶矩估计
+# beta1 beta2分别为v和s的变化系数权重
+for param in params:
+    # 更新v和s
+    v.mul_(beta1).add_(grad, alpha=1 - beta1)  # v
+    s.mul_(beta2).addcmul_(grad, grad.conj(), value=1 - beta2)  # s
+   
+    # 偏差修正，解决初始偏差
+    bias_correction1 = 1 - beta1 ** step
+    bias_correction2 = 1 - beta2 ** step
+   
+    step_size = lr / bias_correction1
+   
+    # 更新梯度
+    param.addcdiv_(v, (s.sqrt() / math.sqrt(bias_correction2)).add_(eps), value=-step_size)
 ```
 
 ## 3. 实验结果
