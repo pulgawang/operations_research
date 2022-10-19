@@ -28,7 +28,8 @@ Adam是一种自适应学习率的优化方法。
 $ git clone git@github.com:pulgawang/operations_research.git
 $ cd operations_research
 $ pip install -r requirements.txt
-$ python homework/main.py --optim [sgd,adam]
+$ python homework/main.py --optim sgd  # 测试sgd算法
+$ python homework/main.py --optim adam  # 测试adam算法
 $ # lr=0.005
 ```
 
