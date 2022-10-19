@@ -2,6 +2,8 @@
 
 > Kingma, Diederik P., and Jimmy Ba. "Adam: A method for stochastic optimization." arXiv preprint arXiv:1412.6980 (2014).
 
+代码：https://github.com/pulgawang/operations_research
+
 ## 1. 问题描述
 
 Adam是一种自适应学习率的优化方法。
@@ -115,7 +117,7 @@ epoch: 19, train loss: 0.00310, train acc: 0.851, test acc: 0.856, escape time: 
 ```
 
 ### 对比
-![loss对比](resources/loss.png)
+![loss对比](https://github.com/pulgawang/operations_research/raw/main/resources/loss.png)
 
 ### 结论
 
