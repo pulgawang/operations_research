@@ -17,9 +17,6 @@ class SGD(Optimizer):
         defaults = dict(lr=lr)
         super(SGD, self).__init__(params, defaults)
 
-    def __setstate__(self, state):
-        super().__setstate__(state)
-
     @torch.no_grad()
     def step(self, closure=None):
         for group in self.param_groups:
@@ -45,14 +42,6 @@ class Adam(Optimizer):
     def __init__(self, params, lr, betas=(0.9, 0.999), eps=1e-8):
         defaults = dict(lr=lr, betas=betas, eps=eps)
         super(Adam, self).__init__(params, defaults)
-
-    def __setstate__(self, state):
-        super().__setstate__(state)
-        state_values = list(self.state.values())
-        step_is_tensor = (len(state_values) != 0) and torch.is_tensor(state_values[0]['step'])
-        if not step_is_tensor:
-            for s in state_values:
-                s['step'] = torch.tensor(float(s['step']))
 
     @torch.no_grad()
     def step(self, closure=None):
